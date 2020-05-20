@@ -6,17 +6,49 @@
      <title>Zaloguj</title>
    </head>
    <body>
-     <div class="login">
-       <h2>Login</h2>
-       <form class="" action="index.html" method="post">
-         <p>Login</p>
-         <input type="text" name="" value="" placeholder="Wprowadź login">
-
-         <p>Hasło</p>
-         <input type="text" name="" value="" placeholder="Wprowadź hasło">
-         <input type="submit" name="" value="Zaloguj">
-         <a href = "#">Zarejestruj</a>
-       </form>
+     <div class="hero">
+        <div class="form-box" id="fb">
+          <div class="button-box">
+            <div id="btn"></div>
+              <button type="button" class="toggle-btn" onclick = "login()">Login</button>
+              <button type="button" class="toggle-btn" onclick = "register()">Zarejetruj się</button>
+          </div>
+          <form id = "login" class="input-group">
+            <input type="text" class="input-value" placeholder="Login" required>
+            <input type="password" class="input-value" placeholder="Hasło" required>
+            <button type="submit" class="sumbit-btn">Login</button>
+          </form>
+          <form id = "register" class="input-group">
+            <input type="text" class="input-value" placeholder="Login" required>
+            <input type="password" class="input-value" placeholder="Hasło" required>
+            <input type="text" class="input-value" placeholder="Imie" required>
+            <input type="text" class="input-value" placeholder="Nazwisko" required>
+            <input type="text" class="input-value" placeholder="E-mail" required>
+            <input type="text" class="input-value" placeholder="Kraj" required>
+            <input type="text" class="input-value" placeholder="Miasto" required>
+            <input type="text" class="input-value" placeholder="Adres" required>
+            <button type="submit" class="sumbit-btn">Zarejestruj</button>
+          </form>
      </div>
-   </body>
+   </div>
+   <script>
+   var log = document.getElementById("login");
+   var reg = document.getElementById("register");
+   var btn = document.getElementById("btn");
+   var fb = document.getElementById("fb");
+   function register(){
+     log.style.left = "-400px"
+     reg.style.left = "50px"
+     btn.style.left = "110px"
+     fb.style.height = "680px"
+   }
+   function login(){
+     log.style.left = "50px"
+     reg.style.left = "450px"
+     btn.style.left = "0"
+     fb.style.height = "400px"
+   }
+
+   </script>
+  </body>
  </html>
