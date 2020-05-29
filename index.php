@@ -1,54 +1,109 @@
-<html lang="en" dir="ltr">
-   <head>
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-     <link rel="stylesheet" href="style.css">
-     <meta charset="utf-8">
-     <title>Zaloguj</title>
-   </head>
-   <body>
-     <div class="hero">
-        <div class="form-box" id="fb">
-          <div class="button-box">
-            <div id="btn"></div>
-              <button type="button" class="toggle-btn" onclick = "login()">Login</button>
-              <button type="button" class="toggle-btn" onclick = "register()">Zarejetruj się</button>
-          </div>
-          <form id = "login" class="input-group" action="login.php" method="postt">
-            <input type="text"  class="input-value" placeholder="Login" required>
-            <input type="password"  class="input-value" placeholder="Hasło" required>
-            <button type="submit" class="sumbit-btn">Login</button>
-          </form>
-          <form id = "register" class="input-group" action="register.php" method="post">
-            <input type="text" class="input-value" name="login" placeholder="Login" required>
-            <input type="password" class="input-value" name="haslo" placeholder="Hasło" required>
-            <input type="text" class="input-value" name="imie" placeholder="Imie" required>
-            <input type="text" class="input-value" name="nazwisko" placeholder="Nazwisko" required>
-            <input type="text" class="input-value" name="email" placeholder="E-mail" required>
-            <input type="text" class="input-value" name="kraj" placeholder="Kraj" required>
-            <input type="text" class="input-value" name="miasto" placeholder="Miasto" required>
-            <input type="text" class="input-value" name="adres" placeholder="Adres" required>
-            <button type="submit" class="sumbit-btn">Zarejestruj</button>
-          </form>
-     </div>
-   </div>
-   <script>
-   var log = document.getElementById("login");
-   var reg = document.getElementById("register");
-   var btn = document.getElementById("btn");
-   var fb = document.getElementById("fb");
-   function register(){
-     log.style.left = "-400px"
-     reg.style.left = "50px"
-     btn.style.left = "110px"
-     fb.style.height = "740px"
-   }
-   function login(){
-     log.style.left = "50px"
-     reg.style.left = "450px"
-     btn.style.left = "0"
-     fb.style.height = "400px"
-   }
+<!DOCTYPE HTML>
+<html lang="pl">
+    <head>
 
-   </script>
-  </body>
- </html>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Firma Transportowa">
+        <meta name="author" content="Filip Papiernik">
+        <title>Firma Transportowa</title>
+
+
+
+        <!--------------------------CSS--------------------->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+        <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <!--------------------------SCRIPTS------------------>
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <!----------------------WLASNY_CSS--------------------->
+        <link rel="stylesheet" href="css/style.css">
+
+
+
+    </head>
+    <body>
+        <?php
+
+
+        session_start();
+
+
+        $current_page = isset($_GET['page']) ? $_GET['page'] : null;
+
+
+
+        switch ($current_page)
+        {
+            case 'logowanie':
+            default;
+                include 'logowanie.php';
+                break;
+            case 'admin':
+                include 'admin/navbarAdmin.php';
+                break;
+            case 'paczki':
+                include 'admin/paczki.php';
+                break;
+            case 'pojazdy':
+                include 'admin/pojazdy.php';
+                break;
+            case 'pracownicy':
+                include 'admin/pracownicy.php';
+                break;
+            case 'ceny':
+                include 'admin/ceny.php';
+                break;
+            case 'umowPrzeglad':
+                include 'klienci/umowPrzeglad.php';
+                break;
+            case 'umowUsluge':
+                include 'klienci/umowUsluge.php';
+                break;
+            case 'dodajSamochod':
+                include 'klienci/dodajSamochod.php';
+                break;
+            case 'historiaKlienta':
+                include 'klienci/historia.php';
+                break;
+            case 'edycjaDanychKlienta':
+                include 'klienci/edytujDane.php';
+                break;
+            case 'obsluzDiagnoze':
+                include 'mechanicy/diagnozy.php';
+                break;
+            case 'obsluzPrzeglad':
+                include 'mechanicy/przeglady.php';
+                break;
+            case 'obsluzUsluge':
+                include 'mechanicy/uslugi.php';
+                break;
+            case 'historiaMechanika':
+                include 'mechanicy/historia.php';
+                break;
+            case 'historiaDiagnoz':
+                include 'administratorzy/historiaDiagnoz.php';
+                break;
+            case 'historiaPrzegladow':
+                include 'administratorzy/historiaPrzegladow.php';
+                break;
+            case 'historiaUslug':
+                include 'administratorzy/historiaUslug.php';
+                break;
+            case 'zarzadzaniePracownikami':
+                include 'administratorzy/zarzadzaniePracownikami.php';
+                break;
+            case 'zarzadzanieUslugami':
+                include 'administratorzy/zarzadzanieUslugami.php';
+                break;
+        }
+
+        ?>
+
+    </body>
+</html>

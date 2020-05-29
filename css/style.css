@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html,body{
+    height: 100%;
+    background-color: #6D6D6D;
+    background-image: url('../img/1.gif');
+ 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    
+    
+}
+
+.login_container{
+    height: 100%;
+    font-family: 'Numans', sans-serif;
+    align-content: center;
+        z-index:1;
+    overflow:hidden;
+    
+}
+.alert{
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    background-color: black;
+    border-color: red;
+    border-width: 2px;
+}
+.card{
+    height: 370px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(0,0,0,0.80) !important;
+    padding: 10px;
+}
+
+.card-header h3{
+    color: white;
+}
+.register_card{
+    height: 370px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 600px;
+    background-color: rgba(0,0,0,0.80) !important;
+
+}
+.registered_card{
+    height: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: auto;
+    background-color: rgba(0,0,0,0.80) !important;
+    color: white;
+    font-size:45px;
+    text-align: center;
+    padding:10px;
+}
+.input-group-prepend span{
+    width: 50px;
+    background-color: gray;
+    color: black;
+    border:0 !important;
+}
+
+input:focus{
+    outline: 0 0 0 0  !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+.login_btn{
+    color: white;
+    background-color: #1A1A1A;
+    border-color: #333333;
+    border-radius: 2px;
+    border-width: 1px;
+    width: 100px;
+}
+
+.login_btn:hover{
+    color: white;
+    background-color: #353535;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: #4D4D4D;
+}
+
+.logout_btn{
+    color: black;
+    background-color: #FFC312;
+    width: 120px;
+    margin: 0px !important;
+}
+
+.logout_btn:hover{
+    color: white;
+    background-color: #3746A5;
+}
+
+.links{
+    color: white;
+}
+
+.links a{
+    color: #3746A5;
+    margin-left: 4px;
+    text-decoration: none;
+}
+.links a:hover{
+    color: #3746FF;
+}
+.chat{
+    float: left;
+    margin: 0px;
+    padding-left: 5px;
+}
+.spacer{
+    height: 10px;
+}
+.card_main{
+    height: 600px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: auto;
+    background-color: rgba(0,0,0,0.95) !important;
+    color:antiquewhite;
+}
+.card_main_top{
+    background-color: rgba(0,0,0,0.95) !important;
+    padding: 10px;   
+    width: 100%;
+    margin: 0px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+    color:antiquewhite;
+}
+#card_main_top_element_nick{
+    width:140px;
+    margin 5px;
+    text-align: center;
+
+}
+#card_main_top_element_button{
+    width:120px;
+    margin 5px;
+    text-align: center;
+}
+
+
+.my-custom-scrollbar {
+position: relative;
+height: 27%;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+#lewa
+{
+    padding: 4px;
+    float: left
+}
+#srodek{
+    padding: 4px;
+    float:inherit;
+}
+.container
+{
+    background-color: rgba(0,0,0,0.80) !important;
+    color: white;
+}
+table {width: 100%;}
+
+tbody {
+    
+    width: 100%;
+    max-height: 200px;;       /* Just for the demo          */
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+}
+.navbar{
+    color: #9a9da0;
+}
+input{
+    margin: auto;
+
+}
+label{
+    color: white;
+}
+#dlugie{
+width: 400px;
+}
+#bdlugie{
+    width: 700px;
+}
