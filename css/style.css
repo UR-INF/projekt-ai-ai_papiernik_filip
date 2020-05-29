@@ -4,12 +4,12 @@ html,body{
     height: 100%;
     background-color: #6D6D6D;
     background-image: url('../img/1.gif');
- 
+
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center; 
-    
-    
+    background-position: center;
+
+
 }
 
 .login_container{
@@ -18,7 +18,7 @@ html,body{
     align-content: center;
         z-index:1;
     overflow:hidden;
-    
+
 }
 .alert{
     position: absolute;
@@ -130,7 +130,7 @@ input:focus{
 }
 .card_main_top{
     background-color: rgba(0,0,0,0.95) !important;
-    padding: 10px;   
+    padding: 10px;
     width: 100%;
     margin: 0px;
     margin-bottom: 10px;
@@ -176,7 +176,7 @@ display: block;
 table {width: 100%;}
 
 tbody {
-    
+
     width: 100%;
     max-height: 200px;;       /* Just for the demo          */
     overflow-y: auto;    /* Trigger vertical scroll    */

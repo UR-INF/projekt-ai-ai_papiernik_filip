@@ -13,7 +13,7 @@ if($conn->connect_error)
 $login = $_POST['login'];
 $haslo = $_POST['haslo'];
 
-//pracownik
+//admin
 	$sql = "SELECT * FROM uzytkownikinfo;";
 	$results = $conn->query($sql);
 
@@ -22,7 +22,7 @@ $haslo = $_POST['haslo'];
 		{
 			if(($login==$row['login']) && ($haslo==$row['haslo']))
 			{
-				$_SESSION['zalogowany']="pracownik";
+				$_SESSION['zalogowany']="admin";
 				header("Location: index.php?page=admin");
 				exit();
 			}

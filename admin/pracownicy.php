@@ -1,13 +1,26 @@
 <?php include 'navbarAdmin.php';
-echo ("pracownicy");
+$loginA = '';
+$hasloA = '';
+$imieA = '';
+$nazwiskoA = '';
+$emailA = '';
+$krajA = '';
+$miastoA = '';
+$adresA = '';
+$funkcjaA = '';
+$update = false;
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Pracownicy</title>
   </head>
   <body>
+    <div class = "tytul">
+      Pracownicy
+    </div>
     <?php
     if(isset($_SESSION['message'])):
      ?>
@@ -77,52 +90,98 @@ echo ("pracownicy");
          </tbody>
       </table>
     </div>
-
+    <?php
+    // edytuj uzytkownika z bazy
+    if(isset($_POST['edytuj'])){
+      $id = $_POST['id'];
+      $result = $conn->query("SELECT * FROM uzytkownikinfo WHERE id_uzytkownikinfo = $id") or die($conn->error);
+        $update = true;
+        $row = $result->fetch_array();
+        $loginA = $row['login'];
+        $hasloA = $row['haslo'];
+        $imieA = $row['imie'];
+        $nazwiskoA = $row['nazwisko'];
+        $emailA = $row['email'];
+        $krajA = $row['kraj'];
+        $miastoA = $row['miasto'];
+        $adresA = $row['adres'];
+        $funkcjaA = $row['id_funkcja'];
+    }
+    if(isset($_POST['aktualizuj'])){
+      $idDR = $_POST['idDR'];
+      $loginA = $_POST['login'];
+      $hasloA = $_POST['haslo'];
+      $imieA = $_POST['imie'];
+      $nazwiskoA = $_POST['nazwisko'];
+      $emailA = $_POST['email'];
+      $krajA = $_POST['kraj'];
+      $miastoA = $_POST['miasto'];
+      $adresA = $_POST['adres'];
+      $funkcjaA = $_POST['funkcja'];
+      $conn->query("UPDATE uzytkownikinfo SET login = '$loginA',haslo = '$hasloA',imie = '$imieA',nazwisko = '$nazwiskoA',email = '$emailA',kraj = '$krajA',miasto = '$miastoA',adres = '$adresA',id_funkcja = '$funkcjaA' WHERE id_uzytkownikinfo=$idDR") or die($conn->error);
+      echo("<meta http-equiv='refresh' content='0'>");
+      $_SESSION['message'] = "Użytkownik został zaktualizowany!";
+      $_SESSION['msg_type'] = "warning";
+    }
+     ?>
     <div class = "row justify-content-center">
     <form class="" action="" method="post">
+      <input type="hidden" name="idDR" value="<?php echo $id; ?>">
       <div class="form-group">
       <label>Login</label>
-      <input type="text" name="login" placeholder="login" class="form-control">
+      <input type="text" name="login" value ="<?php echo $loginA; ?>" placeholder="login" class="form-control">
       </div>
+      <?php
+        if(isset($_SESSION['bladLogin']))
+        {
+          echo '<div class="error">'.$_SESSION['bladLogin'].'</div><br>';
+          unset($_SESSION['bladLogin']);
+        }
+      ?>
       <div class="form-group">
       <label>Haslo</label>
-      <input type="text" name="haslo" placeholder="haslo" class="form-control">
+      <input type="text" name="haslo" value ="<?php echo $hasloA; ?>" placeholder="haslo" class="form-control">
       </div>
       <div class="form-group">
       <label>Imie</label>
-      <input type="text" name="imie" placeholder="imie" class="form-control">
+      <input type="text" name="imie" value ="<?php echo $imieA; ?>" placeholder="imie" class="form-control">
       </div>
       <div class="form-group">
       <label>Nazwisko</label>
-      <input type="text" name="nazwisko" placeholder="nazwisko" class="form-control">
+      <input type="text" name="nazwisko" value ="<?php echo $nazwiskoA; ?>" placeholder="nazwisko" class="form-control">
       </div>
       <div class="form-group">
       <label>E-mail</label>
-      <input type="text" name="email" placeholder="email" class="form-control">
+      <input type="text" name="email" value ="<?php echo $emailA; ?>" placeholder="email" class="form-control">
       </div>
       <div class="form-group">
       <label>Kraj</label>
-      <input type="text" name="kraj" placeholder="kraj" class="form-control">
+      <input type="text" name="kraj" value ="<?php echo $krajA; ?>" placeholder="kraj" class="form-control">
       </div>
       <div class="form-group">
       <label>Miasto</label>
-      <input type="text" name="miasto" placeholder="miasto" class="form-control">
+      <input type="text" name="miasto" value ="<?php echo $miastoA; ?>" placeholder="miasto" class="form-control">
       </div>
       <div class="form-group">
       <label>Adres</label>
-      <input type="text" name="adres" placeholder="adres" class="form-control">
+      <input type="text" name="adres" value ="<?php echo $adresA; ?>" placeholder="adres" class="form-control">
       </div>
       <div class="form-group">
       <label>Funkcja</label>
-      <input type="text" name="funkcja" placeholder="funkcja" class="form-control">
+      <input type="text" name="funkcja" value ="<?php echo $funkcjaA; ?>" placeholder="funkcja" class="form-control">
       </div>
       <div class="form-group">
+      <?php
+      if($update==true):
+       ?>
+      <button type="submit" class="btn btn-warning"name="aktualizuj">Aktualizuj</button>
+    <?php else: ?>
       <button type="submit" class="btn btn-success"name="zapisz">Dodaj</button>
+    <?php endif; ?>
       </div>
       </div>
     </div>
     </form>
-
 
     <?php
     // usun uzytkownika z bazy
@@ -136,26 +195,33 @@ echo ("pracownicy");
 
     // dodaj uzytkownika do bazy
      if(isset($_POST['zapisz'])){
-       $login = $_POST['login'];
-       $haslo = $_POST['haslo'];
-       $imie = $_POST['imie'];
-       $nazwisko = $_POST['nazwisko'];
-       $email = $_POST['email'];
-       $kraj = $_POST['kraj'];
-       $miasto = $_POST['miasto'];
-       $adres = $_POST['adres'];
-       $funkcja = $_POST['funkcja'];
-       $conn->query("INSERT INTO uzytkownikinfo (login,haslo,imie,nazwisko,email,kraj,miasto,adres,id_funkcja) VALUES('$login','$haslo','$imie','$nazwisko','$email','$kraj','$miasto','$adres','$funkcja')") or die($conn->error);
-       echo("<meta http-equiv='refresh' content='0'>");
+       $loginA = $_POST['login'];
+       $hasloA = $_POST['haslo'];
+       $imieA = $_POST['imie'];
+       $nazwiskoA = $_POST['nazwisko'];
+       $emailA = $_POST['email'];
+       $krajA = $_POST['kraj'];
+       $miastoA = $_POST['miasto'];
+       $adresA = $_POST['adres'];
+       $funkcjaA = $_POST['funkcja'];
+
+       $rezultat = $conn->query("SELECT id_uzytkownikinfo FROM uzytkownikinfo WHERE login='$loginA'");
+       if(!$rezultat) throw new Exception($conn->error); //błąd
+
+       $ile_loginow = $rezultat->num_rows;
+       if($ile_loginow>0)
+       {
+         $correct=false;
+         $_SESSION['bladLogin']="Taki login już istnieje!";
+       }
+
+       if($correct == true){
+       $conn->query("INSERT INTO uzytkownikinfo (login,haslo,imie,nazwisko,email,kraj,miasto,adres,id_funkcja) VALUES('$loginA','$hasloA','$imieA','$nazwiskoA','$emailA','$krajA','$miastoA','$adresA','$funkcjaA')") or die($conn->error);
        $_SESSION['message'] = "Dodano użytkownika do bazy danych!";
        $_SESSION['msg_type'] = "success";
+       }
+       echo("<meta http-equiv='refresh' content='0'>");
      }
-
-  // edytuj uzytkownika z bazy
-  if(isset($_POST['edytuj'])){
-    $id = $_POST['id'];
-
-  }
 ?>
   </body>
 </html>
