@@ -23,7 +23,7 @@ $haslo = $_POST['haslo'];
 			if(($login==$row['login']) && ($haslo==$row['haslo']))
 			{
 				$_SESSION['zalogowany']="pracownik";
-				header("Location: index.php?page=pracownicy");
+				header("Location: index.php?page=admin");
 				exit();
 			}
 		}
