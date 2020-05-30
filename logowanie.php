@@ -14,7 +14,7 @@ $login = $_POST['login'];
 $haslo = $_POST['haslo'];
 
 //admin
-	$sql = "SELECT * FROM uzytkownikinfo;";
+	$sql = "SELECT * FROM uzytkownikinfo WHERE id_funkcja = 2;";
 	$results = $conn->query($sql);
 
 	if($results->num_rows>0){
@@ -27,11 +27,31 @@ $haslo = $_POST['haslo'];
 				exit();
 			}
 		}
-		echo "Nie ma";
+		echo "Podany login lub hasło jest nieprawidłowe!";
 	}
 	else{
 		echo "Podany login lub hasło jest nieprawidłowe!";
 	}
+
+	//pracownik
+		$sql = "SELECT * FROM uzytkownikinfo WHERE id_funkcja = 1;";
+		$results = $conn->query($sql);
+
+		if($results->num_rows>0){
+			while($row = $results->fetch_assoc())
+			{
+				if(($login==$row['login']) && ($haslo==$row['haslo']))
+				{
+					$_SESSION['zalogowany']="pracownik";
+					header("Location: index.php?page=informacje");
+					exit();
+				}
+			}
+			echo "Podany login lub hasło jest nieprawidłowe!";
+		}
+		else{
+			echo "Podany login lub hasło jest nieprawidłowe!";
+		}
 
 
 

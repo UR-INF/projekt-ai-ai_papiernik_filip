@@ -95,11 +95,11 @@ $update = false;
       <input type="hidden" name="idDR" value="<?php echo $id; ?>">
       <div class="form-group">
       <label>Marka</label>
-      <input type="text" name="marka" value ="<?php echo $markaA; ?>" placeholder="marka" class="form-control">
+      <input type="text" name="marka" value ="<?php echo $markaA; ?>" placeholder="marka" class="form-control" required>
       </div>
       <div class="form-group">
       <label>Model</label>
-      <input type="text" name="model" value ="<?php echo $modelA; ?>" placeholder="model" class="form-control">
+      <input type="text" name="model" value ="<?php echo $modelA; ?>" placeholder="model" class="form-control" required>
       </div>
       <div class="form-group">
       <?php

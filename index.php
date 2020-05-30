@@ -21,8 +21,6 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <!----------------------WLASNY_CSS--------------------->
-        <link rel="stylesheet" href="css/style.css">
 
 
 
@@ -59,17 +57,17 @@
             case 'ceny':
                 include 'admin/ceny.php';
                 break;
-            case 'umowPrzeglad':
-                include 'klienci/umowPrzeglad.php';
+            case 'pracownik':
+                include 'pracownik/navbarPracownik.php';
                 break;
-            case 'umowUsluge':
-                include 'klienci/umowUsluge.php';
+            case 'wybierzPrac':
+                include 'pracownik/wybierzPrac.php';
                 break;
-            case 'dodajSamochod':
-                include 'klienci/dodajSamochod.php';
+            case 'wybierzOdb':
+                include 'pracownik/wybierzOdb.php';
                 break;
-            case 'historiaKlienta':
-                include 'klienci/historia.php';
+            case 'informacje':
+                include 'pracownik/informacje.php';
                 break;
             case 'edycjaDanychKlienta':
                 include 'klienci/edytujDane.php';

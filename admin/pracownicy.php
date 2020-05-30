@@ -9,6 +9,7 @@ $miastoA = '';
 $adresA = '';
 $funkcjaA = '';
 $update = false;
+$correct = true;
 
 ?>
 <!DOCTYPE html>
@@ -16,6 +17,11 @@ $update = false;
   <head>
     <meta charset="utf-8">
     <title>Pracownicy</title>
+    <style>
+      .error{
+        color: red;
+      }
+    </style>
   </head>
   <body>
     <div class = "tytul">
@@ -129,7 +135,7 @@ $update = false;
       <input type="hidden" name="idDR" value="<?php echo $id; ?>">
       <div class="form-group">
       <label>Login</label>
-      <input type="text" name="login" value ="<?php echo $loginA; ?>" placeholder="login" class="form-control">
+      <input type="text" name="login" value ="<?php echo $loginA; ?>" placeholder="login" class="form-control" required>
       </div>
       <?php
         if(isset($_SESSION['bladLogin']))
@@ -140,35 +146,70 @@ $update = false;
       ?>
       <div class="form-group">
       <label>Haslo</label>
-      <input type="text" name="haslo" value ="<?php echo $hasloA; ?>" placeholder="haslo" class="form-control">
+      <input type="text" name="haslo" value ="<?php echo $hasloA; ?>" placeholder="haslo" class="form-control" required>
       </div>
       <div class="form-group">
       <label>Imie</label>
-      <input type="text" name="imie" value ="<?php echo $imieA; ?>" placeholder="imie" class="form-control">
+      <input type="text" name="imie" value ="<?php echo $imieA; ?>" placeholder="imie" class="form-control" required>
       </div>
+      <?php
+        if(isset($_SESSION['bladImie']))
+        {
+          echo '<div class="error">'.$_SESSION['bladImie'].'</div><br>';
+          unset($_SESSION['bladImie']);
+        }
+      ?>
       <div class="form-group">
       <label>Nazwisko</label>
-      <input type="text" name="nazwisko" value ="<?php echo $nazwiskoA; ?>" placeholder="nazwisko" class="form-control">
+      <input type="text" name="nazwisko" value ="<?php echo $nazwiskoA; ?>" placeholder="nazwisko" class="form-control" required>
       </div>
+      <?php
+        if(isset($_SESSION['bladNazwisko']))
+        {
+          echo '<div class="error">'.$_SESSION['bladNazwisko'].'</div><br>';
+          unset($_SESSION['bladNazwisko']);
+        }
+      ?>
       <div class="form-group">
       <label>E-mail</label>
-      <input type="text" name="email" value ="<?php echo $emailA; ?>" placeholder="email" class="form-control">
+      <input type="text" name="email" value ="<?php echo $emailA; ?>" placeholder="email" class="form-control" required>
       </div>
+      <?php
+        if(isset($_SESSION['bladEmail']))
+        {
+          echo '<div class="error">'.$_SESSION['bladEmail'].'</div><br>';
+          unset($_SESSION['bladEmail']);
+        }
+      ?>
       <div class="form-group">
       <label>Kraj</label>
-      <input type="text" name="kraj" value ="<?php echo $krajA; ?>" placeholder="kraj" class="form-control">
+      <input type="text" name="kraj" value ="<?php echo $krajA; ?>" placeholder="kraj" class="form-control" required>
       </div>
+      <?php
+        if(isset($_SESSION['bladKraj']))
+        {
+          echo '<div class="error">'.$_SESSION['bladKraj'].'</div><br>';
+          unset($_SESSION['bladKraj']);
+        }
+      ?>
       <div class="form-group">
       <label>Miasto</label>
-      <input type="text" name="miasto" value ="<?php echo $miastoA; ?>" placeholder="miasto" class="form-control">
+      <input type="text" name="miasto" value ="<?php echo $miastoA; ?>" placeholder="miasto" class="form-control" required>
       </div>
+      <?php
+        if(isset($_SESSION['bladMiasto']))
+        {
+          echo '<div class="error">'.$_SESSION['bladMiasto'].'</div><br>';
+          unset($_SESSION['bladMiasto']);
+        }
+      ?>
       <div class="form-group">
       <label>Adres</label>
-      <input type="text" name="adres" value ="<?php echo $adresA; ?>" placeholder="adres" class="form-control">
+      <input type="text" name="adres" value ="<?php echo $adresA; ?>" placeholder="adres" class="form-control" required>
       </div>
       <div class="form-group">
       <label>Funkcja</label>
-      <input type="text" name="funkcja" value ="<?php echo $funkcjaA; ?>" placeholder="funkcja" class="form-control">
+      <input type="text" name="funkcja" value ="<?php echo $funkcjaA; ?>" placeholder="funkcja" class="form-control" required>
       </div>
       <div class="form-group">
       <?php
@@ -214,6 +255,26 @@ $update = false;
          $correct=false;
          $_SESSION['bladLogin']="Taki login już istnieje!";
        }
+       if (!filter_var($emailA, FILTER_VALIDATE_EMAIL)) {
+         $correct=false;
+         $_SESSION['bladEmail']="Nie prawidlowy format e-mailu!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$imieA)) {
+            $correct=false;
+            $_SESSION['bladImie']="Pole 'Imie' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$nazwiskoA)) {
+            $correct=false;
+            $_SESSION['bladNazwisko']="Pole 'Nazwisko' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$krajA)) {
+            $correct=false;
+            $_SESSION['bladKraj']="Pole 'Kraj' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$miastoA)) {
+            $correct=false;
+            $_SESSION['bladMiasto']="Pole 'Miasto' może zawierać tylko litery!";
+        }
 
        if($correct == true){
        $conn->query("INSERT INTO uzytkownikinfo (login,haslo,imie,nazwisko,email,kraj,miasto,adres,id_funkcja) VALUES('$loginA','$hasloA','$imieA','$nazwiskoA','$emailA','$krajA','$miastoA','$adresA','$funkcjaA')") or die($conn->error);
