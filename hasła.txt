@@ -1,0 +1,12 @@
+Administrator:
+Login: admin
+Hasło: admin
+Pracownik:
+Login: pracownik
+Hasło: pracownik
+Kurier:
+Login: kurierr
+Hasło: kurierr
+Klient:
+Login: klientt
+Hasło: klientt
