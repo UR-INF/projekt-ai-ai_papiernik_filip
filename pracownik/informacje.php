@@ -1,6 +1,8 @@
 <?php include 'navbarPracownik.php';
 $update = 1;
 $correctInfo = true;
+$correctInfo1 = true;
+$_SESSION['koszt'] = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -10,13 +12,11 @@ $correctInfo = true;
     <style>
       .error{
         color: red;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <div class = "tytul">
-      Pracownicy
-    </div>
     <?php
     if(isset($_SESSION['message'])):
      ?>
@@ -37,6 +37,7 @@ $correctInfo = true;
     // uzupelnij tabele rekordami
     $result = $conn->query("SELECT * FROM uzytkownikinfo WHERE id_funkcja = 3") or die($conn->error);
     $result1 = $conn->query("SELECT * FROM odbiorca") or die($conn->error);
+    $result2 = $conn->query("SELECT * FROM pojazdy") or die($conn->error);
 
     function pre_r($array)
     {
@@ -48,18 +49,74 @@ $correctInfo = true;
     <?php
     // edytuj uzytkownika z bazy
     if(isset($_POST['wybierzKlient'])){
-      $id = $_POST['id'];
+      $_SESSION['id'] = $_POST['id'];
       $update = 0;
     }
     if(isset($_POST['wybierzOdbiorca'])){
-      $idOdbiorca = $_POST['idOdbiorca'];
+      $_SESSION['idOdbiorca'] = $_POST['idOdbiorca'];
+      $help = $_SESSION['idOdbiorca'];
+      $result5 = $conn->query("SELECT kraj FROM odbiorca WHERE id_odbiorca = '$help'") or die($conn->error);
+      $row=$result5->fetch_assoc();
+      $transport = $row['kraj'];
+      if($transport != 'polska' or $transport != 'Polska')
+      {
+        $_SESSION['transport'] = 'Międzynarodowy';
+      }
       $update = 2;
     }
-  if(isset($_POST['dodaj'])){
+    if(isset($_POST['wybierzPojazd'])){
+      $_SESSION['idPojazd'] = $_POST['idPojazd'];
+      $update = 3;
+    }
 
-    $kosztP = $_POST['koszt'];
+    // dodaj uzytkownika do bazy
+     if(isset($_POST['zapisz'])){
+       $imieA = $_POST['imie'];
+       $nazwiskoA = $_POST['nazwisko'];
+       $telefonA = $_POST['telefon'];
+       $krajA = $_POST['kraj'];
+       $miastoA = $_POST['miasto'];
+       $adresA = $_POST['adres'];
+       $peselA = $_POST['pesel'];
+       $update = 0;
+
+       if (!is_numeric($telefonA)) {
+         $correctInfo1=false;
+         $_SESSION['bladTelefon']="Telefon może zawierać tylko liczby!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$imieA)) {
+            $correctInfo1=false;
+            $_SESSION['bladImie']="Pole 'Imie' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$nazwiskoA)) {
+            $correctInfo1=false;
+            $_SESSION['bladNazwisko']="Pole 'Nazwisko' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$krajA)) {
+            $correctInfo1=false;
+            $_SESSION['bladKraj']="Pole 'Kraj' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[a-zA-Z\s]+$/",$miastoA)) {
+            $correctInfo1=false;
+            $_SESSION['bladMiasto']="Pole 'Miasto' może zawierać tylko litery!";
+        }
+        if ( !preg_match ("/^[0-9]{11}$/",$peselA)) {
+            $correctInfo1=false;
+            $_SESSION['bladPesel']="Pole 'Pesel' może zawierać tylko liczby i posiadac 11 cyfr!";
+        }
+
+       if($correctInfo1 == true){
+       $conn->query("INSERT INTO odbiorca (imie,nazwisko,telefon,kraj,miasto,adres,pesel) VALUES('$imieA','$nazwiskoA','$telefonA','$krajA','$miastoA','$adresA','$peselA')") or die($conn->error);
+       $_SESSION['message'] = "Dodano odbiorce do bazy danych!";
+       $_SESSION['msg_type'] = "success";
+       echo("<meta http-equiv='refresh' content='0'>");
+       $update = 0;
+       }
+     }
+
+  if(isset($_POST['dodaj'])){
     $wagaP = $_POST['waga'];
-    $typP = $_POST['typ'];
+    $nazwaP = $_POST['nazwa'];
     $ubezpieczenieP = $_POST['ubezpieczenie'];
 
     if(!is_numeric($wagaP))
@@ -67,22 +124,43 @@ $correctInfo = true;
      $correctInfo=false;
      $_SESSION['bladWaga']="Pole 'Waga' może zawierać tylko cyfry!";
     }
-    if(!is_numeric($kosztP))
+
+    if($_SESSION['transport'] == 'Międzynarodowy')
     {
-     $correctInfo=false;
-     $_SESSION['bladKoszt']="Pole 'Koszt' może zawierać tylko cyfry!";
+      $result7 = $conn->query("SELECT typ FROM ceny WHERE id_ceny = 1") or die($conn->error);
+      $row=$result7->fetch_assoc();
+      $_SESSION['koszt'] = $_SESSION['koszt'] + $row['typ'];
+      $typP = 'Międzynarodowy';
+    }
+    else{
+      $typP = 'Krajowy';
+    }
+
+
+    if($_POST['ubezpieczenie'] == 'Tak'){
+      $result4 = $conn->query("SELECT ubezpieczenie FROM ceny WHERE id_ceny = 1") or die($conn->error);
+      $row=$result4->fetch_assoc();
+      $_SESSION['koszt'] = $_SESSION['koszt'] + $row['ubezpieczenie'];
     }
 
     if($correctInfo == true)
     {
-      $conn->query("INSERT INTO przesylka (id_odbiorca,id_klient,id_pojazd,nazwa_przesylki,) VALUES('$markaA','$modelA')") or die($conn->error);
-      echo("<meta http-equiv='refresh' content='0'>");
-      $_SESSION['message'] = "Dodano pojazd do bazy danych!";
+      $idOdbiorca = $_SESSION['idOdbiorca'];
+      $idKlient = $_SESSION['id'];
+      $idPojazd = $_SESSION['idPojazd'];
+
+      $result10 = $conn->query("SELECT waga FROM ceny WHERE id_ceny = 1") or die($conn->error);
+      $row=$result10->fetch_assoc();
+      $kosztI = $_SESSION['koszt'] + $wagaP * $row['waga'];
+
+      $conn->query("INSERT INTO przesylka (id_odbiorca,id_klient,id_pojazd,nazwa_przesylki,waga,typ_przesylki,ubezpieczenie,koszt,status) VALUES('$idOdbiorca','$idKlient','$idPojazd','$nazwaP','$wagaP','$typP','$ubezpieczenieP','$kosztI','Rejestracja')") or die($conn->error);
+      $_SESSION['message'] = "Dodano przesyłke do bazy danych!";
       $_SESSION['msg_type'] = "success";
+      echo("<meta http-equiv='refresh' content='0'>");
       $update = 1;
     }
     else {
-      $update = 2;
+      $update = 3;
 
     }
   }
@@ -165,7 +243,113 @@ $correctInfo = true;
          </tbody>
       </table>
     </div>
+    <div class = "row justify-content-center">
+      <div>
+    <div class="form-group">
+    <label>Imie</label>
+    <input type="text" name="imie" value ="" placeholder="imie" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladImie']))
+      {
+        echo '<div class="error">'.$_SESSION['bladImie'].'</div><br>';
+        unset($_SESSION['bladImie']);
+      }
+    ?>
+    <div class="form-group">
+    <label>Nazwisko</label>
+    <input type="text" name="nazwisko" value ="" placeholder="nazwisko" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladNazwisko']))
+      {
+        echo '<div class="error">'.$_SESSION['bladNazwisko'].'</div><br>';
+        unset($_SESSION['bladNazwisko']);
+      }
+    ?>
+    <div class="form-group">
+    <label>Telefon</label>
+    <input type="text" name="telefon" value ="" placeholder="telefon" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladTelefon']))
+      {
+        echo '<div class="error">'.$_SESSION['bladTelefon'].'</div><br>';
+        unset($_SESSION['bladTelefon']);
+      }
+    ?>
+    <div class="form-group">
+    <label>Kraj</label>
+    <input type="text" name="kraj" value ="" placeholder="kraj" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladKraj']))
+      {
+        echo '<div class="error">'.$_SESSION['bladKraj'].'</div><br>';
+        unset($_SESSION['bladKraj']);
+      }
+    ?>
+    <div class="form-group">
+    <label>Miasto</label>
+    <input type="text" name="miasto" value ="" placeholder="miasto" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladMiasto']))
+      {
+        echo '<div class="error">'.$_SESSION['bladMiasto'].'</div><br>';
+        unset($_SESSION['bladMiasto']);
+      }
+    ?>
+    <div class="form-group">
+    <label>Adres</label>
+    <input type="text" name="adres" value ="" placeholder="adres" class="form-control" >
+    </div>
+    <div class="form-group">
+    <label>Pesel</label>
+    <input type="text" name="pesel" value ="" placeholder="pesel" class="form-control" >
+    </div>
+    <?php
+      if(isset($_SESSION['bladPesel']))
+      {
+        echo '<div class="error">'.$_SESSION['bladPesel'].'</div><br>';
+        unset($_SESSION['bladPesel']);
+      }
+    ?>
+    <div class="form-group">
+    <button type="submit" class="btn btn-success"name="zapisz">Dodaj</button>
+  </div>
+    </div>
+  </div>
   <?php elseif($update==2): ?>
+      <div>
+      <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Marka</th>
+            <th scope="col">Model</th>
+
+            <th colspan="2">Akcja</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php
+        while($row = $result2->fetch_assoc()):
+         ?>
+         <tr>
+           <td><?php echo $row['marka'] ?></td>
+           <td><?php echo $row['model'] ?></td>
+           <td>
+             <form method="POST">
+                <input type="submit" name="wybierzPojazd" class="btn btn-success" value="Wybierz">
+                <input type="hidden" value="<?php echo $row['id_pojazd']; ?>" name="idPojazd"/>
+            </form>
+           </td>
+         <?php endwhile; ?>
+         </tr>
+         </tbody>
+      </table>
+    </div>
+  <?php elseif($update==3): ?>
     <div class = "row justify-content-center">
     <div>
     <form class="" action="" method="post">
@@ -185,12 +369,11 @@ $correctInfo = true;
         }
       ?>
       <div class="form-group">
-      <label>Typ przesyłki</label>
-      <input type="text" name="typ" value ="" placeholder="typ przesylki" class="form-control" required>
-      </div>
-      <div class="form-group">
       <label>Ubezpieczenie</label>
-      <input type="text" name="ubezpieczenie" value ="" placeholder="ubezpieczenie" class="form-control" required>
+      <select name="ubezpieczenie" class="form-control form-control-lg">
+                            <option value="Tak">Tak</option>
+                            <option value="Nie">Nie</option>
+      </select>
       </div>
       <?php
         if(isset($_SESSION['bladKoszt']))

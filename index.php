@@ -21,7 +21,18 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-
+        <style>
+        body {
+            background-image: url('img/bg.jpg');
+            height: 100%;
+            background-color: #6D6D6D;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: white;
+}
+             }
+        </style>
 
 
     </head>
@@ -69,35 +80,17 @@
             case 'informacje':
                 include 'pracownik/informacje.php';
                 break;
-            case 'edycjaDanychKlienta':
-                include 'klienci/edytujDane.php';
+            case 'kurier':
+                include 'kurier/paczki.php';
                 break;
-            case 'obsluzDiagnoze':
-                include 'mechanicy/diagnozy.php';
+            case 'klient':
+                include 'klient/navbarKlient.php';
                 break;
-            case 'obsluzPrzeglad':
-                include 'mechanicy/przeglady.php';
+            case 'aktywne':
+                include 'klient/aktywne.php';
                 break;
-            case 'obsluzUsluge':
-                include 'mechanicy/uslugi.php';
-                break;
-            case 'historiaMechanika':
-                include 'mechanicy/historia.php';
-                break;
-            case 'historiaDiagnoz':
-                include 'administratorzy/historiaDiagnoz.php';
-                break;
-            case 'historiaPrzegladow':
-                include 'administratorzy/historiaPrzegladow.php';
-                break;
-            case 'historiaUslug':
-                include 'administratorzy/historiaUslug.php';
-                break;
-            case 'zarzadzaniePracownikami':
-                include 'administratorzy/zarzadzaniePracownikami.php';
-                break;
-            case 'zarzadzanieUslugami':
-                include 'administratorzy/zarzadzanieUslugami.php';
+            case 'historia':
+                include 'klient/historia.php';
                 break;
         }
 

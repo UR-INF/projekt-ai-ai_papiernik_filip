@@ -1,4 +1,4 @@
-<?php include 'navbarAdmin.php';
+<?php include 'navbarKurier.php';
 $nazwaA = '';
 $wagaA = '';
 $typA = '';
@@ -21,9 +21,6 @@ $correctPaczki = true;
     </style>
   </head>
   <body>
-    <div class = "tytul">
-      Paczki
-    </div>
     <?php
     if(isset($_SESSION['message'])):
      ?>
@@ -42,7 +39,7 @@ $correctPaczki = true;
     if($conn->connect_error)
     die("Bład połaczenia".$conn->connect_error());
     // uzupelnij tabele rekordami
-    $result = $conn->query("SELECT * FROM przesylka") or die($conn->error);
+    $result = $conn->query("SELECT * FROM przesylka WHERE status = 'Rejestracja' OR status ='W transporcie'") or die($conn->error);
 
     function pre_r($array)
     {
@@ -78,7 +75,6 @@ $correctPaczki = true;
            <td>
              <form method="POST">
                 <input type="submit" name="edytuj" class="btn btn-warning" value="Edytuj">
-                <input type="submit" name="usun" class="btn btn-danger" value="Usuń">
                 <input type="hidden" value="<?php echo $row['id_przesylka']; ?>" name="id"/>
             </form>
            </td>
@@ -105,26 +101,10 @@ $correctPaczki = true;
     }
     if(isset($_POST['aktualizuj'])){
       $idDR = $_POST['idDR'];
-      $nazwaA = $_POST['nazwa'];
-      $wagaA = $_POST['waga'];
-      $typA = $_POST['typ'];
-      $ubezpA = $_POST['ubezp'];
-      $kosztA = $_POST['koszt'];
-      $statusA = $_POST['status'];
-
-      if(!is_numeric($wagaA))
-      {
-       $correctPaczki=false;
-       $_SESSION['bladWaga']="Pole 'Waga' może zawierać tylko cyfry!";
-      }
-      if(!is_numeric($kosztA))
-      {
-       $correctPaczki=false;
-       $_SESSION['bladKoszt']="Pole 'Koszt' może zawierać tylko cyfry!";
-      }
-
+      $nazwa = $_POST['nazwa'];
+      $statusA = $_POST['transport'];
       if($correctPaczki == true){
-      $conn->query("UPDATE przesylka SET nazwa_przesylki = '$nazwaA', waga = '$wagaA', typ_przesylki = '$typA', ubezpieczenie = '$ubezpA', koszt = '$kosztA', status = '$statusA'  WHERE id_przesylka=$idDR") or die($conn->error);
+      $conn->query("UPDATE przesylka SET status = '$statusA'  WHERE id_przesylka=$idDR") or die($conn->error);
       $_SESSION['message'] = "Przesyłka została zaktualizowana!";
       $_SESSION['msg_type'] = "warning";
       echo("<meta http-equiv='refresh' content='0'>");
@@ -133,62 +113,26 @@ $correctPaczki = true;
      ?>
     <div class = "row justify-content-center">
     <form class="" action="" method="post">
+      <div class="form-group">
       <input type="hidden" name="idDR" value="<?php echo $id; ?>">
+    </div>
       <div class="form-group">
-      <label>Nazwa</label>
-      <input type="text" name="nazwa" value ="<?php echo $nazwaA; ?>" placeholder="nazwa" class="form-control" required>
-      </div>
-      <div class="form-group">
-      <label>Waga</label>
-      <input type="text" name="waga" value ="<?php echo $wagaA; ?>" placeholder="waga" class="form-control" required>
-      </div>
-      <?php
-        if(isset($_SESSION['bladWaga']))
-        {
-          echo '<div class="error">'.$_SESSION['bladWaga'].'</div><br>';
-          unset($_SESSION['bladWaga']);
-        }
-      ?>
-      <div class="form-group">
-      <label>Typ</label>
-      <input type="text" name="typ" value ="<?php echo $typA; ?>" placeholder="typ" class="form-control" required>
-      </div>
-      <div class="form-group">
-      <label>Ubezpieczenie</label>
-      <input type="text" name="ubezp" value ="<?php echo $ubezpA; ?>" placeholder="ubezpieczenie" class="form-control" required>
-      </div>
-      <div class="form-group">
-      <label>Koszt</label>
-      <input type="text" name="koszt" value ="<?php echo $kosztA; ?>" placeholder="koszt" class="form-control" required>
-      </div>
-      <?php
-        if(isset($_SESSION['bladKoszt']))
-        {
-          echo '<div class="error">'.$_SESSION['bladKoszt'].'</div><br>';
-          unset($_SESSION['bladKoszt']);
-        }
-      ?>
-      <div class="form-group">
+        <label>Nazwa</label>
+        <input type="text" name="nazwa" value ="<?php echo $nazwaA; ?>" placeholder="nazwa" class="form-control" required>
+        </div>
       <label>Status</label>
-      <input type="text" name="status" value ="<?php echo $statusA; ?>" placeholder="status" class="form-control" required>
+      <div class="form-group">
+      <select name="transport" class="form-control form-control-lg">
+                            <option value="Awizo">Awizo</option>
+                            <option value="Dostarczona">Dostarczona</option>
+                            <option value="W transporcie">W transporcie</option>
+      </select>
       </div>
-
       <div class="form-group">
       <button type="submit" class="btn btn-warning"name="aktualizuj">Aktualizuj</button>
       </div>
-      </div>
     </div>
-    </form>
 
-    <?php
-    // usun uzytkownika z bazy
-    if(isset($_POST['usun'])){
-      $id = $_POST['id'];
-      $conn->query("DELETE FROM przesylka WHERE id_przesylka = $id") or die($conn->error);
-      echo("<meta http-equiv='refresh' content='0'>");
-      $_SESSION['message'] = "Usunięto przesyłke z bazy danych!";
-      $_SESSION['msg_type'] = "danger";
-    }
-    ?>
+    </form>
   </body>
 </html>

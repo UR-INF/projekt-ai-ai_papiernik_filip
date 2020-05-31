@@ -11,9 +11,6 @@ $update = false;
     <title>Pojazdy</title>
   </head>
   <body>
-    <div class = "tytul">
-      Pojazdy
-    </div>
     <?php
     if(isset($_SESSION['message'])):
      ?>

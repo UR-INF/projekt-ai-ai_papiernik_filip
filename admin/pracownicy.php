@@ -20,13 +20,11 @@ $correct = true;
     <style>
       .error{
         color: red;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <div class = "tytul">
-      Pracownicy
-    </div>
     <?php
     if(isset($_SESSION['message'])):
      ?>
@@ -209,7 +207,11 @@ $correct = true;
       </div>
       <div class="form-group">
       <label>Funkcja</label>
-      <input type="text" name="funkcja" value ="<?php echo $funkcjaA; ?>" placeholder="funkcja" class="form-control" required>
+      <select name="funkcja" class="form-control form-control-lg">
+                            <option value="1">1-Pracownik</option>
+                            <option value="2">2-Admin</option>
+                            <option value="3">3-Kurier</option>
+      </select>
       </div>
       <div class="form-group">
       <?php
